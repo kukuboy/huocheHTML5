@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>个人中心</title>	
+		<link href="../css/mui.min.css" rel="stylesheet" />
+			<link href="../css/mui.min1.css" rel="stylesheet" />
+		<script src="../js/mui.min.js"></script>		<link href="css/mui.min.css" rel="stylesheet" />
+		<link href="../css/style1.css" rel="stylesheet" />
+		<link href="../css/buttons.css" rel="stylesheet" />
+		<script type="text/javascript" src="js/jquery-2.1.1.js" ></script>
+		<script type="text/javascript">
+			window.onload=function(){
+				var phone=localStorage.getItem("phone");
+				//alert(phone.length);
+				if(phone.length==11){
+				document.getElementById("name").innerHTML=phone;
+				}
+				else{
+					var username=localStorage.getItem("username");
+					document.getElementById("name").innerHTML=username;
+				}
+				var phone1=localStorage.getItem('phone1');
+				//alert(name);
+			if(phone1!=1){
+				//alert("请先登录");
+				//window.location.href="login.html";
+				document.getElementById("name").innerHTML="请先登录";
+			}
+			else{
+				$.ajax({
+            url:"../sessions/POST/get_car.php",
+            type: "POST",
+       dataType:"JSONP",
+       async:true,
+       jsonp: "callbackparam",  
+       data:{phone:phone},
+             beforeSend: function(){
+             }, //加载执行方法
+             error: function(err){
+             	err=JSON.stringify(err);
+             	alert(err);
+             } ,
+             success: function(str){
+             	str=JSON.stringify(str);
+             	//alert(str);
+             	str=JSON.parse(str);
+             	str=str[0];
+              //alert(str.name);
+              document.getElementById("huochename").value=str.name;
+              document.getElementById("size1").value=str.size;
+              document.getElementById("wid").value=str.width;
+              document.getElementById("weg").value=str.weight;
+              document.getElementById("hei").value=str.height;
+                }
+             });
+             }
+				
+			};
+			function tuichu(){
+				localStorage.setItem("phone1",0);window.location.href="login.html";
+			}
+				function tuichu1(){
+				localStorage.setItem("phone1",0);var cPage = plus.webview.currentWebview();bPage.close();plus.webview.open('new-webview.html');
+			}
+			function size1(){
+				var huochename=document.getElementById("huochename").value;
+				var sizename=document.getElementById("size1").value;
+				var widthname=document.getElementById("wid").value;
+				var weightname=document.getElementById("weg").value;
+				var heightname=document.getElementById("hei").value;
+				var phone=localStorage.getItem("phone");
+				console.log(phone);
+				//alert(heightname);
+			$.ajax({
+            url:"/huo/sessions/POST/gaicar.php",
+            type: "POST",
+       dataType:"JSONP",
+       async:true,
+       jsonp: "callbackparam",  
+       data:{user:phone,name:huochename,size:sizename,width:widthname,weight:weightname,height:heightname},
+             beforeSend: function(){
+             }, //加载执行方法
+             error: function(err){
+             	err=JSON.stringify(err);
+             	//alert(err);
+             } ,
+             success: function(str){
+          	//console.log("修改成功");
+          	alert("修改成功");
+                }
+             });
+			}
+		</script>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">个人中心</h1><a style="float: right; margin-top: 3%;" onclick="ab()">首页</a>
+		</header>
+			<a style="" href="dingdan.html"><img width="20%" style=" margin-left: 40%; margin-top: 15%;" src="../images/gps-icon.png" /></a>
+			<br />
+			<a href="dingdan.html" style="margin-left: 40%;">订单中心</a>
+				<div class="mui-content">
+				<div class="mui-input-row">
+					<label>账户</label>
+                <p id="name"  style="font-size: 1.5em;"> </p>				
+				</div>
+				<div style="width: 100%; height:50px; border:solid 1px">
+					            <a onclick="tuichu()" style="margin-left: 0%; width: 100%;" class="button button-3d button-primary button-rounded">更换或登录账户</a>
+				</div>
+					<div style="width: 100%; height:50px; border:solid 1px">
+	            <a onclick="tuichu1()" style="margin-left: 0%; margin-top: 0%; width: 100%;" class="button button-3d button-primary button-rounded">退出当前账户</a>
+				</div>
+				<div style="width: 100%; height:50px; border:solid 1px">
+  <a onclick="size1()" style="margin-left: 0%; width: 80%;" class="button button-3d button-primary button-rounded">更换货车型号</a>
+				<input  id="huochename" type="text" style=" float:right ; width: 18%; height: 70%; text-align: center;" />				
+				</div>
+				<div style="width: 100%; height:50px; border:solid 1px">
+  <a onclick="size1()" style="margin-left: 0%; width: 80%;" class="button button-3d button-primary button-rounded">更换货车分类（标准在最后）</a>
+				<input  id="size1" type="text" style=" float:right ; width: 18%; height: 70%; text-align: center;" />				
+				</div>
+				<div style="width: 100%; height:50px; border:solid 1px">
+  <a onclick="size1()" style="margin-left: 0%; width: 80%;" class="button button-3d button-primary button-rounded">更换货车宽度（单位米）</a>
+				<input  id="wid" type="text" style=" float:right ;width: 18%; height: 70%; text-align: center;" />				
+				</div>
+				<div style="width: 100%; height:50px; border:solid 1px">
+  <a onclick="size1()" style="margin-left: 0%; width: 80%;" class="button button-3d button-primary button-rounded">更换货车重量（单位t）</a>
+				<input  id="weg" type="text" style=" float:right ;width: 18%; height: 70%; text-align: center;" />				
+				</div>
+				<div style="width: 100%; height:50px; border:solid 1px">
+  <a onclick="size1()" style="margin-left: 0%; width: 80%;" class="button button-3d button-primary button-rounded">更换货车高度（单位米）</a>
+				<input  id="hei" type="text" style=" float:right ;width: 18%; height: 70%; text-align: center;" />				
+				</div>
+				<p>	此分类依据国标1：微型车，2：轻型车（默认值），3：中型车，4：重型车</p>
+		</div>
+		<script>
+			mui.init();
+			function ab(){
+   var cPage = plus.webview.currentWebview();
+    //获取上一级页面（B页面）
+    var bPage = cPage.opener();
+      var dPage = bPage.opener();
+    //获取上一级页面的上一级页面（A页面）
+    w=bPage.id
+      var w=JSON.stringify(w);
+   // alert(w);
+    cPage.close();
+    if(w=='"new"'){
+    	bPage.close();
+    	cPage.close();
+    }
+			}
+		</script>
+	</body>
+</html>

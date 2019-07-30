@@ -1,0 +1,166 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>覆盖物事件</title>
+    <script type="text/javascript" src="../js/jquery.min.js" ></script>
+    	<link rel="stylesheet" href="css/reset.css"> <!-- CSS reset -->
+	<link rel="stylesheet" href="css/style.css"> <!-- Resource style -->
+    <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css"/>
+    <style>
+        html,body,#container{
+            height:100%;
+            width:100%;
+        }
+    </style>
+    <script type="text/javascript">
+    </script>
+</head>
+<body>  
+<div id='container'></div>
+<div class="info">
+    <h4 id='status' style="display: none;"></h4><hr>
+    <p id='result' style="display: none;"></p><hr>
+</div>
+<div class="info" style="height: 10%;" id="text">
+    点击对应点获取货物信息
+</div> 
+<script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.14&key=afd1fdf002584053aa088a27ecf51391&plugin=AMap.Geocoder"></script>
+<script src="https://a.amap.com/jsapi_demos/static/demo-center/js/demoutils.js"></script>
+<script type="text/javascript">
+    //初始化地图对象，加载地图
+   var map = new AMap.Map('container', {
+        resizeEnable: true
+    });
+       var geocoder,marker;
+    function regeoCode() {
+        if(!geocoder){
+            geocoder = new AMap.Geocoder({
+                city: "010", //城市设为北京，默认：“全国”
+                radius: 1000 //范围，默认：500
+            });
+        }
+        var lnglat  = document.getElementById('lnglat').value.split(',');
+         if(!marker){
+            marker = new AMap.Marker();
+            map.add(marker);
+        }
+        marker.setPosition(lnglat);
+        
+        geocoder.getAddress(lnglat, function(status, result) {
+            if (status === 'complete'&&result.regeocode) {
+                var address = result.regeocode.formattedAddress;
+                document.getElementById('address').value = address;
+            }else{alert(JSON.stringify(result))}
+        });
+    }
+    AMap.plugin('AMap.Geolocation', function() {
+        var geolocation = new AMap.Geolocation({
+            enableHighAccuracy: true,//是否使用高精度定位，默认:true
+            timeout: 10000,          //超过10秒后停止定位，默认：5s
+            buttonPosition:'RT',    //定位按钮的停靠位置
+            buttonOffset: new AMap.Pixel(10, 20),//定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
+            zoomToAccuracy: true,   //定位成功后是否自动调整地图视野到定位点
+
+        });
+        map.addControl(geolocation);
+        geolocation.getCurrentPosition(function(status,result){
+            if(status=='complete'){
+                onComplete(result)
+            }else{
+                onError(result)
+            }
+        });
+    });  
+         function copy(){
+     	var a=document.getElementById("copya").innerHTML;
+     	//console.log(a);
+     	var e=document.getElementById("copy");
+     	e.value=a;
+     	console.log(e.value);
+     	e.select();
+     	document.execCommand("Copy");
+     	alert("复制成功");
+     }
+    //解析定位结果
+    function onComplete(data) {
+        document.getElementById('status').innerHTML='定位成功'
+        var str = [];
+        str.push('定位结果：' + data.position);
+        str.push('定位类别：' + data.location_type);
+        if(data.accuracy){
+             str.push('精度：' + data.accuracy + ' 米');
+        }//如为IP精确定位结果则没有精度信息
+        str.push('是否经过偏移：' + (data.isConverted ? '是' : '否'));
+        document.getElementById('result').innerHTML = str.join('<br>');
+    }
+    //解析定位错误信息
+    function onError(data) {
+        document.getElementById('status').innerHTML='定位失败'
+        document.getElementById('result').innerHTML = '失败原因排查信息:'+data.message;
+    }
+    	     $.ajax({
+            url:"../sessions/POST/get_jingwei.php",
+            type: "POST",
+       dataType:"JSONP",
+       async:true,
+       jsonp: "callbackparam",  
+       data:{},
+             beforeSend: function(){
+//           	             	$(".cd-pricing-list").html("'<li>'加载中'</li>'");
+             }, //加载执行方法
+             error: function(err){
+             	err=JSON.stringify(err);
+             	alert(err);
+             	$(".cd-pricing-list").html("'<li>'数据展示'</li>'");
+             } ,
+             success: function(str){
+             	    var markers = [];
+             	  $.each(str,function (index,obj) { 
+                 var jing = obj.jing;
+                 var wei=obj.wei;
+                 var where=obj.qidian;
+                 var whereto=obj.zhongdian;
+                 var money=obj.money;
+                 var what=obj.what;
+                 var how=obj.how;
+                 var time=obj.time;
+                 var fabuzhe=obj.fabuzhe;
+               //  alert(jing);
+                 //alert(wei);
+               var marker = new AMap.Marker({
+            position: new AMap.LngLat(jing,wei),
+            icon: 'https://webapi.amap.com/theme/v1.3/markers/n/mark_b' + (index + 1) + '.png',
+            extData: {
+                id: index + 1
+            }
+        });
+               markers.push(marker);
+      
+     marker.on('click', showInfoM);
+ function showInfoM(e){
+ 	document.querySelector("#text").style.height="35%";
+     var text = '您在 [ '+e.lnglat.getLng()+','+e.lnglat.getLat()+' ] 的位置点击了marker！'
+     document.querySelector("#text").innerHTML='<ul class="cd">'+
+						'<li>'+'<em>'+'终点'+'</em>'+ whereto+'</li>'+
+						'<li>'+'<em>'+'货物'+'</em>'+ what+'</li>'+
+						'<li>'+'<em>'+'重量'+'</em>'+ how+'</li>'+
+						'<li>'+'<em>'+'时间'+'</em>'+time+'</li>'+
+						'<li>'+'<em>'+'价钱'+'</em>'+money+'</li>'+
+						'<li>'+'<em>'+'发布者'+'</em>'+'<a id="copya" href="tel:fabuzhe">'+fabuzhe+'</a>'+'<button onclick="copy()">'+'复制'+'</button>'+'</li>'+
+					'<input id="copy" style="display:none">'+
+					'</ul>';
+   }
+             });
+                    var overlayGroups = new AMap.OverlayGroup(markers);
+                         map.add(overlayGroups);
+                               map.setFitView();
+             }
+             });
+
+    
+</script>
+</body>
+</html>

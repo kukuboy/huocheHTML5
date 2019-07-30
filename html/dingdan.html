@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+<link rel="stylesheet" type="text/css"  href="../js/datebox/js/easyui.css">
+			<link href="../css/mui.min1.css" rel="stylesheet" />
+		<link href="../css/style1.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="../js/datebox/js/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="../js/datebox/js/themes/bootstrap/datagrid.css">
+	 <link rel="stylesheet" type="text/css" href="../js/datebox/js/themes/bootstrap/datebox.css">
+    <script type="text/javascript"  src="../js/datebox/js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="../js/datebox/js/jquery.easyui.min.js"></script>
+	 <script type="text/javascript"  src="../js/datebox/js/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript">
+
+	function dd(){
+	$('#dg').datagrid({ 
+    onLoadSuccess: function (data) { 
+        $('#a').html("订单数量为"+data.total)
+    }
+});
+		var t=$('#dd').datebox('getValue')
+		//alert(y);
+	var phone1=localStorage.getItem("phone");
+		$('#dg').datagrid('load',{
+          phone:phone1,
+			dd:t //$('#dd').datebox('getValue')
+			
+		});
+		}
+			function dd1(){
+	$('#dg1').datagrid({ 
+    onLoadSuccess: function (data) { 
+        $('#a1').html("订单数量为"+data.total)
+    }
+});
+		var t=$('#dd1').datebox('getValue');
+		//alert(t);
+		var phone1=localStorage.getItem("phone");
+		//alert(phone1);
+		$('#dg1').datagrid('load',{
+			phone:phone1,
+			dd:t //$('#dd').datebox('getValue')	
+		});
+		}	
+			window.onload=function(){
+				var a=localStorage.getItem("phone1");
+				if(a!=1){
+					console.log("还未登陆");
+				}
+		$('#dd').datebox('setValue', formatterDate(new Date()));
+		$('#dd1').datebox('setValue', formatterDate(new Date()));
+//	dd();
+//	dd1();
+	}
+	function suoyou(){
+		var t=$('#dd').datebox('getValue');
+		//alert(t);
+	var l=localStorage.getItem("sdsdsdsdsdq2");
+		var phone1=localStorage.getItem("phone");
+		$('#dg').datagrid('load',{
+			phone:phone1,
+			dd: ''//$('#dd').datebox('getValue')
+			//itemid:18860360510
+		});
+		}
+					
+	function suoyou1(){
+		var t=$('#dd1').datebox('getValue');
+	var l=localStorage.getItem("sdsdsdsdsdq2");
+	var phone1=localStorage.getItem("phone");
+		$('#dg1').datagrid('load',{
+			phone:phone1,
+			dd:''//$('#dd').datebox('getValue')
+			//itemid:18860360510
+		});
+	}
+	        function rowformater(value, row, index) {
+	        	return '<a href="#" onclick="luxian(' + index + ')">设定为当前订单</a>';
+                      
+        }
+           function luxian(index) {
+         $('#dg').datagrid('selectRow', index);
+          var row = $('#dg').datagrid('getSelected');
+       if (row.id!= null && row.id !== undefined)
+            {
+            	localStorage.setItem('qidianvalue',row.qidian);
+            	localStorage.setItem('zhongdianvalue',row.zhongdian);
+            	alert("设定完毕，可去首页点击当前订单获取此订单路线");
+            }
+        }
+</script>
+<script language="javascript">
+//得到当前日期
+formatterDate = function(date) {
+var day = date.getDate() > 9 ? date.getDate() : '0'+ date.getDate();
+var month = (date.getMonth() + 1) > 9 ? (date.getMonth() + 1) : "0"
++ (date.getMonth() + 1);
+return date.getFullYear()+'-'+month+'-'+day;
+}
+</script>
+		<title>订单管理</title>
+		<style>
+			.slideThree {
+	width: 80%;
+	height: 26px;
+	background: #333;
+	margin: 20px auto;
+	position: relative;
+	-moz-border-radius: 50px;
+	-webkit-border-radius: 50px;
+	border-radius: 50px;
+	-moz-box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.5), 0px 1px 0px rgba(255, 255, 255, 0.2);
+	-webkit-box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.5), 0px 1px 0px rgba(255, 255, 255, 0.2);
+	box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.5), 0px 1px 0px rgba(255, 255, 255, 0.2);
+}
+.slideThree:after {
+	content: '我发布的订单';
+	color: #000;
+	position: absolute;
+	right: 10px;
+	z-index: 0;
+	font: 12px/26px Arial, sans-serif;
+	font-weight: bold;
+	text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.15);
+}
+.slideThree:before {
+	content: '我接受的订单';
+	color: #00bf00;
+	position: absolute;
+	left: 10px;
+	z-index: 0;
+	font: 12px/26px Arial, sans-serif;
+	font-weight: bold;
+}
+.slideThree label {
+	display: block;
+	width: 45%;
+	height: 20px;
+	cursor: pointer;
+	position: absolute;
+	top: 3px;
+	left: 3px;
+	z-index: 1;
+	background: #fcfff4;
+	background: -moz-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
+	background: -webkit-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
+	background: linear-gradient(to bottom, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
+	-moz-border-radius: 50px;
+	-webkit-border-radius: 50px;
+	border-radius: 50px;
+	-moz-transition: all 0.4s ease;
+	-o-transition: all 0.4s ease;
+	-webkit-transition: all 0.4s ease;
+	transition: all 0.4s ease;
+	-moz-box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.3);
+	-webkit-box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.3);
+	box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.3);
+}
+.slideThree input[type=checkbox] {
+	visibility: hidden;
+}
+.slideThree input[type=checkbox]:checked + label {
+	left: 53%;
+}
+body {
+	background: #333;
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 300;
+}
+
+		</style>
+		<script type="text/javascript">
+			$(document).ready(function(){
+				  document.getElementById("fabu").style.display="none";
+			});
+		function change(){
+		if($("#slideThree").prop("checked")==true){
+            document.getElementById("fabu").style.display="none";
+            document.getElementById("jieshou").style.display="block";
+            dd();
+          }else{
+           document.getElementById("fabu").style.display="block";
+            document.getElementById("jieshou").style.display="none";
+            dd1();
+             }
+		}
+		</script>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<h1 class="mui-title">我的订单</h1><a style="float: right; margin-top: 3%;" onclick="ab()">首页</a>
+		</header>
+		<font id="tishi" style="; color: #B8EECF;"></font>
+		  <section title=".slideThree"> 
+    <div style="margin-top: 20%;" class="slideThree">
+      <input type="checkbox" id="slideThree" onchange="change()" name="check" value="true" checked="checked" />
+      <label for="slideThree"></label>
+    </div>
+    </section>
+    <div id="jieshou" style="width: 90%; margin-left: 5%;">
+    <table id="dg" title="我接受的订单" class="easyui-datagrid" style="width:auto; height:auto"
+       url="../sessions/GET/get_users.php"
+       toolbar="#toolbar"
+       rownumbers="true" fitColumns="false" singleSelect="true">
+   
+    <thead>
+    <tr>
+      <th field="id" width="30">id</th>
+        <th field="fabuzhe" width="80">发布者</th>
+        <th field="what" width="50">货物</th>
+        <th field="qidian" width="50">位置</th>
+        <th field="time" width="60">时间</th>
+        <th field="luxian" formatter="rowformater" width="90">操作</th>
+    </tr>
+    </thead>
+</table>
+ 	<div id="toolbar"><div style="text-align:center">
+    <span>日期:</span>
+        <input id="dd" type="text" class="easyui-datebox" data-options="onSelect:dd" required="required" onChange="dd()">
+        <a href="#" class="easyui-linkbutton" iconCls="icon-reload" plain="true" onclick="suoyou()">所有日期</a>
+		<div style="block:none ;font-size:20px;" id="a"></div></div> 
+        </div>
+</div>
+<div id="fabu" style="width: 90%; margin-left: 5%;">
+<div id="toolbar1"><div style="text-align:center">
+    <span>日期:</span>
+        <input id="dd1" type="text" class="easyui-datebox" data-options="onSelect:dd1" required="required" onChange="dd1()">
+        <a href="#" class="easyui-linkbutton" iconCls="icon-reload" plain="true" onclick="suoyou1()">所有日期</a>
+		<div style="block:none ;font-size:20px;" id="a1"></div></div> 
+</div>
+<table id="dg1" class="easyui-datagrid" title="我发布的订单" style="width:auto;height:auto"
+			data-options="
+				iconCls: 'icon-edit',
+				singleSelect: true,
+				url:'../sessions/GET/get_user1.php',onAfterEdit:onAfterEdit,
+				onClickCell: onClickCell,
+			" toolbar="#toolbar1">
+		<thead>
+			<tr>
+				<th data-options="field:'id',width:0,hidden:true">ID</th>
+				<th data-options="field:'what',width:50,editor:'text'">货物</th>
+				<th data-options="field:'money',width:40,align:'right',editor:'text'">价钱</th>
+				<th data-options="field:'time',width:70,align:'right',editor:'datebox'">时间</th>
+				<th data-options="field:'jieshouzhe',width:80,editor:'numberbox'">接受者</th>
+				<th data-options="field:'how',width:60,align:'center',editor:'text'">重量</th>
+			</tr>
+		</thead>
+	</table>
+</div>
+	<script type="text/javascript">
+		$.extend($.fn.datagrid.methods, {
+			editCell: function(jq,param){
+				return jq.each(function(){
+					var opts = $(this).datagrid('options');
+					var fields = $(this).datagrid('getColumnFields',true).concat($(this).datagrid('getColumnFields'));
+					for(var i=0; i<fields.length; i++){
+						var col = $(this).datagrid('getColumnOption',fields[i]);
+						col.editor1 = col.editor;
+						if (fields[i] != param.field){
+							col.editor = null;
+						}
+					}
+					$(this).datagrid('beginEdit',param.index);
+					for(var i=0; i<fields.length; i++){
+						var col = $(this).datagrid('getColumnOption',fields[i]);
+						col.editor = col.editor1;
+					}
+				});
+			}
+		});
+		
+		var editIndex = undefined;
+		function endEditing(){
+			if (editIndex == undefined){return true}
+			if ($('#dg1').datagrid('validateRow', editIndex)){
+				$('#dg1').datagrid('endEdit', editIndex);
+				editIndex = undefined;
+				return true;
+			} else {
+				return false;
+			}
+		}
+		function onClickCell(index, field){
+			if (endEditing()){
+				$('#dg1').datagrid('selectRow', index)
+				$('#dg1').datagrid('editCell', {index:index,field:field});
+				editIndex = index;
+			}
+		}
+		function onAfterEdit(index,data,changes){
+			alert("修改成功");
+			data=JSON.stringify(data);
+			//alert(data);
+			data=JSON.parse(data);
+			//data=eval(data);
+			var datajieshou=data.jieshouzhe;
+			var datafabuzhe=localStorage.getItem("phone");
+			 var dataid=data.id; 
+			 var date=new Date();
+			 var day = date.getDate() > 9 ? date.getDate() : '0'+ date.getDate();
+              var month = (date.getMonth() + 1) > 9 ? (date.getMonth() + 1) : "0"+ (date.getMonth() + 1);
+              var huowutime=date.getFullYear()+'-'+month+'-'+day;
+			//alert(huowutime);
+		$.ajax({
+            url:"../sessions/POST/xiugai.php",
+            type: "POST",
+       dataType:"JSON",
+       async:true,
+       data:{id:dataid,jieshouzhe:datajieshou},
+             beforeSend: function(){
+          }, //加载执行方法
+             error: function(err){
+             } ,
+             success: function(str){
+             	alert("修改成功");
+             }});
+             $.ajax({
+            url:"../sessions/POST/jiaoyi.php",
+            type: "POST",
+       dataType:"JSON",
+       async:true,
+       data:{id:dataid,jieshouzhe:datajieshou,fabuzhe:datafabuzhe,huowutime:huowutime},
+             beforeSend: function(){
+          }, //加载执行方法
+             error: function(err){
+             	//err=JSON.stringify(err);
+             	//alert(err);
+             } ,
+             success: function(str){
+             	alert("修改成功");
+             }});
+             
+		}
+		 //删除
+
+			function ab(){
+				var cPage = plus.webview.currentWebview();
+    var bPage = cPage.opener();
+    //获取上一级页面的上一级页面（A页面）
+    cPage.close();
+			}
+	</script>
+	</body>
+</html>

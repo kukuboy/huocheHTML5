@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html class="ui-page-login">
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link href="../css/style.css" rel="stylesheet" />
+		<script src="lib/js/jquery-1.8.3.min.js" type="text/javascript"></script>
+       <script src="lib/js/jquery.cookie.js"></script>
+		<style>
+			.area {
+				margin: 20px auto 0px auto;
+			}
+			.mui-input-group:first-child {
+				margin-top: 20px;
+			}
+			.mui-input-group label {
+				width: 22%;
+			}
+			.mui-input-row label~input,
+			.mui-input-row label~select,
+			.mui-input-row label~textarea {
+				width: 78%;
+			}
+			.mui-checkbox input[type=checkbox],
+			.mui-radio input[type=radio] {
+				top: 6px;
+			}
+			.mui-content-padded {
+				margin-top: 25px;
+			}
+			.mui-btn {
+				padding: 10px;
+			}
+			
+		</style>
+			<script type="text/javascript">
+					function jingwei(){
+				localStorage.setItem("fangxiang","3");
+				window.location.href="dingwei.html";
+			}
+		</script>
+		<script type="text/javascript">
+			var channel=null;
+// 1. 获取支付通道
+function plusReady(){
+    // 获取支付通道
+    plus.payment.getChannels(function(channels){
+        channel=channels[0];
+    },function(e){
+        alert("获取支付通道失败："+e.message);
+    });
+}
+document.addEventListener('plusready',plusReady,false);
+var ALIPAYSERVER='http://demo.dcloud.net.cn/helloh5/payment/alipay.php?total=0.01';
+var WXPAYSERVER='http://demo.dcloud.net.cn/helloh5/payment/wxpay.php?total=0.01';
+// 2. 发起支付请求
+function pay(id){
+    // 从服务器请求支付订单
+    var PAYSERVER='';
+    if(id=='alipay'){
+        PAYSERVER=ALIPAYSERVER;
+    }else if(id=='wxpay'){
+        PAYSERVER=WXPAYSERVER;
+    }else{
+        plus.nativeUI.alert("不支持此支付通道！",null,"捐赠");
+        return;
+    }
+    var xhr=new XMLHttpRequest();
+    xhr.onreadystatechange=function(){
+        switch(xhr.readyState){
+            case 4:
+            if(xhr.status==200){
+                plus.payment.request(channel,xhr.responseText,function(result){
+                    plus.nativeUI.alert("支付成功！",function(){
+           localStorage.setItem("zhifu",1);
+            $("#yan").addClass("on");
+   var time = 5;
+   $("#yan").attr("disabled",true );
+   $("#yan1").attr("disabled",true );
+   var timer = setInterval(function() {
+    if (time == 0) {
+     clearInterval(timer);
+     $("#yan").attr("disabled", false);
+     $("#yan").val("支付宝支付");
+     $("#yan").removeClass("on");
+       $("#yan1").attr("disabled", false);
+     $("#yan1").val("微信支付");
+     $("#yan1").removeClass("on");
+    } else {
+     $("#yan").val(time + "秒后可再获取，请勿重复支付");
+     $("#yan1").val(time + "秒后可再获取，请勿重复支付");
+     time--;
+    }
+   }, 1000);
+                        back();
+                    });
+                },function(error){
+                    plus.nativeUI.alert("支付失败了吧：" + error.code);
+                    localStorage.setItem("zhifu",0);
+                });
+            }else{
+                alert("获取订单信息失败！");
+                localStorage.setItem("zhifu",0);
+            }
+            break;
+            default:
+            break;
+        }
+    }
+    xhr.open('GET',PAYSERVER);
+    xhr.send();
+}
+		</script>
+		<script language="javascript">
+			window.onload=function (){
+				 localStorage.setItem("zhifu",2);
+				var phone1=localStorage.getItem("phone1");
+							if(phone1!=1){
+								//alert("请先登录");
+				//window.location.href="login.html";
+			}
+				var phone=localStorage.getItem("phone");
+				//alert(phone.length);
+				if(phone.length==11){
+				document.getElementById("phonetitle").innerHTML=phone;
+				}
+				else{
+					var username=localStorage.getItem("username");
+				document.getElementById("phonetitle").innerHTML=username;
+				}
+				//document.getElementById("phonetitle").innerHTML=name;
+				var a=localStorage.getItem("what1");
+				var b=localStorage.getItem("where1");
+				var c=localStorage.getItem("whereto1");
+				var d=localStorage.getItem("money1");
+				var e=localStorage.getItem("how1");
+				var f=localStorage.getItem("time1");
+				var j=localStorage.getItem("jingwei");
+				var w=localStorage.getItem("konjian1");
+				if(j!=null){
+				j=j.split(",");
+				}
+				document.getElementById("jing").value=j[0];
+				document.getElementById("wei").value=j[1];
+				document.getElementById("what").value=a;
+				document.getElementById("where").value=b;
+				document.getElementById("whereto").value=c;
+				document.getElementById("money").value=d;
+				document.getElementById("how").value=e;
+				document.getElementById("time").value=f;
+				document.getElementById("phone").value=phone;
+				document.getElementById("konjian").value=w;
+			};
+function chkinput(form){
+	
+		var phone1=localStorage.getItem("phone1");
+				var phone=localStorage.getItem('phone');
+							if(phone1!=1){
+								alert("请先登录");
+				return false;
+			}
+	var a=document.getElementById("what").value;
+	var b=document.getElementById("where").value;
+	var c=document.getElementById("whereto").value;
+	var d=document.getElementById("money").value;
+	var e=document.getElementById("how").value;
+	var f=document.getElementById("time").value;
+	var w=document.getElementById("konjian").value;
+	localStorage.setItem("what1",a);localStorage.setItem("where1",b);
+	localStorage.setItem("whereto1",c);localStorage.setItem("money1",d);
+	localStorage.setItem("how1",e);localStorage.setItem("time1",f);
+	localStorage.setItem("konjian1",w);
+	if(form.what.value==""){
+		alert("请输入货物!");
+		form.what.select();
+		return(false);
+	}
+	if(form.where.value==""){
+		alert("请输入起点!");
+		form.where.select();
+		return(false);	
+	}
+		if(form.whereto.value==""){
+		alert("请输入终点!");
+		form.whereto.select();
+		return(false);	
+	}
+	if(form.money.value==""){
+		alert("请输入价钱!");
+		form.money.select();
+		return(false);	
+	}
+	if(form.how.value==""){
+		alert("请输入重量!");
+		form.how.select();
+		return(false);	
+	}
+		var w=localStorage.getItem("zhifu");
+		//console.log(w);
+		if(w!=1){
+		alert("请先进行支付");
+		return(false);	
+	      }
+	
+}
+</script>
+ <script type="text/javascript" src='https://webapi.amap.com/maps?v=1.4.14&key=afd1fdf002584053aa088a27ecf51391&plugin=AMap.Autocomplete'></script>
+<script type="text/javascript">
+    var map = new AMap.Map("container", {
+        resizeEnable: true
+    });
+        var auto = new AMap.Autocomplete({
+        input: "where"});
+  var auto1 = new AMap.Autocomplete({
+        input: "whereto"});
+        </script>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title"><a id="phonetitle"></a></h1><!--<a style="float: right; margin-top: 3%;" onclick="ab()">首页</a>-->
+		</header>
+		<div id="container" style="display: none;"></div>
+		<div class="mui-content">
+			<div class="mui-input-row">
+			<input type="button" onclick="jingwei()" style=" width: 100%;" value="请先点击这里进行经纬获取"/>
+			</div>
+			<form class="mui-input-group" id="regist" name="regist" method="post" action="../sessions/POST/zengjiaok.php" onsubmit="return chkinput(this)">
+				<div class="mui-input-row">
+					<label>货物</label>
+					<input id='what' name="what" type="text" class="mui-input-clear mui-input" placeholder="请输入货物">
+				</div>
+					<div class="mui-input-row">
+					<label>起点</label>
+					<input id='where' name="where" type="text" class="mui-input-clear mui-input" placeholder="请输入起点">
+				</div>
+				<div class="mui-input-row">
+					<label>终点</label>
+					<input id='whereto' name="whereto" type="text" class="mui-input-clear mui-input" placeholder="请输入终点">
+				</div>
+				<div class="mui-input-row">
+					<label>价钱</label>
+					<input id='money' name="money" type="text" class="mui-input-clear mui-input" placeholder="请输入价钱">
+				</div>
+				<div class="mui-input-row">
+					<label>重量</label>
+					<input id='how' name="how" type="text" class="mui-input-clear mui-input" placeholder="请输入重量，单位吨">
+				</div>
+					<div class="mui-input-row">
+					<label>空间</label>
+					<input id='konjian' name="konjian" type="text" class="mui-input-clear mui-input" placeholder="请输入空间，单位立方">
+				</div>
+					<div class="mui-input-row">
+					<label>时间</label>
+					<input id='time' name="time" type="date" class="mui-input-clear mui-input" >
+				</div>
+					<div class="mui-input-row">
+              <label>经度</label>
+                <input id="jing" name="jing" placeholder="请点击下方经纬获取按钮获取经纬度"  />
+					</div>
+					<div class="mui-input-row">
+					 <label>纬度</label> 
+					 <input id="wei" name="wei" placeholder="请点击下方经纬获取按钮获取经纬度"  />
+					</div>
+					<div class="mui-input-row">
+			        <input type="button" id="yan" onclick="pay('alipay')" style=" width: 50%; float: left;" value="支付宝支付"/>
+					<input type="button" id="yan1" onclick="pay('wxpay')" style=" width: 50%; float: left;" value="微信支付"/>
+					</div>
+				<div class="mui-input-row">
+					<input style="font-size: 1em; margin-left: 40%; margin-right: 40%; color: #000000;" type="submit" name="ok" id="ok" value="确认" />
+				</div>
+				<div  style="display: none;" class="mui-input-row">
+					<input id='phone' name="phone" type="text" class="mui-input-clear mui-input" >
+				</div>
+			</form>
+		</div>
+		<script src="../js/mui.min1.js"></script>
+		<script src="../js/app1.js"></script>
+		<!--<script>
+			(function($, doc) {
+				$.init();
+				$.plusReady(function() {
+					var settings = app.getSettings();
+					var regButton = doc.getElementById('reg');
+					var accountBox = doc.getElementById('account');
+					var passwordBox = doc.getElementById('password');
+					var passwordConfirmBox = doc.getElementById('password_confirm');
+					var emailBox = doc.getElementById('email');
+					regButton.addEventListener('tap', function(event) {
+						var regInfo = {
+							account: accountBox.value,
+							password: passwordBox.value,
+							email: emailBox.value
+						};
+						var passwordConfirm = passwordConfirmBox.value;
+						if (passwordConfirm != regInfo.password) {
+							plus.nativeUI.toast('密码两次输入不一致');
+							return;
+						}
+						app.reg(regInfo, function(err) {
+							if (err) {
+								plus.nativeUI.toast(err);
+								return;
+							}
+							plus.nativeUI.toast('注册成功');
+							/*
+							 * 注意：
+							 * 1、因本示例应用启动页就是登录页面，因此注册成功后，直接显示登录页即可；
+							 * 2、如果真实案例中，启动页不是登录页，则需修改，使用mui.openWindow打开真实的登录页面
+							 */
+							plus.webview.getLaunchWebview().show("pop-in",200,function () {
+								plus.webview.currentWebview().close("none");
+							});
+							//若启动页不是登录页，则需通过如下方式打开登录页
+							$.openWindow({
+								url: 'login.html',
+								id: 'login',
+							show: {
+								aniShow: 'pop-in'
+							}
+						});
+						});
+					});
+				});
+			}(mui, document));
+		</script>-->
+	</body>
+
+</html>

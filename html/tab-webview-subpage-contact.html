@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+ <script type="text/javascript" src="https://cache.amap.com/lbs/static/addToolbar.js"></script>
+ <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css" />
+    <script src="https://a.amap.com/jsapi_demos/static/demo-center/js/demoutils.js"></script>
+		<script src="../js/mui.min.js"></script>
+		<link href="http://www.jq22.com/jquery/bootstrap-3.3.4.css" rel="stylesheet">
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,700' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="css/reset.css"> <!-- CSS reset -->
+	<link rel="stylesheet" href="css/style.css"> <!-- Resource style -->
+	<script src="js/modernizr.js"></script> 	<!-- Modernizr -->
+<script type="text/javascript" src="../js/jquery.min.js" ></script>
+<script src="http://www.jq22.com/jquery/1.11.1/jquery.min.js"></script>
+	<script src="http://www.jq22.com/jquery/bootstrap-3.3.4.js"></script>
+	<script src="provice/distpicker.data.js"></script>
+	  <script src="provice/distpicker.js"></script>
+	  <link rel="stylesheet" href="../css/buttons.css">
+<!--	  <script src="provice/main.js"></script>-->
+	<title>订单中心</title>
+	<script type="text/javascript">
+	 $(document).ready(function(){
+	 	var a=localStorage.getItem("qidian1");
+	 	var b=localStorage.getItem("zhongdian1");
+	 	document.getElementById("tiiinput").value=b;
+	 	document.getElementById("tipinput").value=a;
+//	    $('#distpicker3').distpicker({
+//  province: '河南省',
+//  city: '杭州市',
+//});
+         });
+    </script> 
+</head>
+<body>
+	<div class="info" style="position: absolute; top: 0; left: 0; width: 100%; height: auto;">
+        <span class="input-item-text" style="width:8rem; float: left; height: 40px; "><a onclick="qidian()" style="font-size: 1.7em;">起点定位</a></span>
+      <input id='tipinput' type="text" style="width: 25rem; height: 4rem;">
+        <span class="input-item-text" style="width:8rem; float: left; height: 40px;"><a onclick="zhongdian()" style="font-size: 1.7em;">终点定位</a></span>
+      <input id='tiiinput' type="text" style="width: 25rem; height: 4rem;">
+      <br />
+      <a>多耗</a><input type="radio" style="display: inline;" name="radiotime" value="180" />3小时
+      <input type="radio" style="display: inline;" name="radiotime" value="360" />6小时
+      <input type="radio" style="display: inline;" name="radiotime" value="540" />9小时
+      <input type="radio" style="display: inline;" name="radiotime" value="720" />12小时
+      <input type="radio" style="display: inline;" name="radiotime" value="10000" checked="checked" />不限
+      <br />
+        <a>空间</a><input type="radio" style="display: inline;" name=radiomi" value="10" />10立方
+      <input type="radio" style="display: inline;" name="radiomi" value="20" />20立方
+      <input type="radio" style="display: inline;" name="radiomi" value="30" />30立方
+      <input type="radio" style="display: inline;" name="radiomi" value="100" checked="checked"/>一车
+      <br />
+<form class="form-inline">
+      <div data-toggle="distpicker"><div style="float: left; margin-top: 3%;"><a>接单范围</a></div>
+        <div style="float: left; width: 23%;" class="form-group">
+       <!--   <label class="sr-only" for="province3">Province</label>-->
+          <select class="form-control" id="province3" data-province="河南省"></select>
+        </div>
+        <div style="float: left; width: 23%;" class="form-group">
+          <label class="sr-only" for="city3">City</label>
+          <select class="form-control" id="city3" data-city="郑州市"></select>
+        </div>
+        <div style="float: left; width: 23%;" class="form-group">
+          <label class="sr-only" for="district3">District</label>
+          <select class="form-control" id="district3" data-district="高新区"></select>
+        </div>
+      </div>
+    </form>
+      <div onclick="sosuo()" style="height: 100px;">
+      	<button class="button button-3d button-primary button-rounded" style="margin-left: 30%; margin-top: 0%; height: 40px;">搜索订单</button>
+   </div>
+      </div>
+	<header class="cd-header" style="margin-top: 66%;">
+		<h1>订单中心</h1>
+	</header>
+
+	<div class="cd-pricing-container">
+		<ul class="cd-pricing-list">
+			
+		</ul> <!-- .cd-pricing-list -->
+	</div> <!-- .cd-pricing-container -->	
+	<div id="container" style="width: 200px; height: 200px; display: none;">
+		<div id="panel"></div>
+	</div>
+<script src="js/jquery-2.1.1.js"></script>
+<script src="js/main.js"></script> <!-- Resource jQuery -->
+ <script type="text/javascript" src='https://webapi.amap.com/maps?v=1.4.14&key=afd1fdf002584053aa088a27ecf51391&plugin=AMap.TruckDriving,AMap.Autocomplete,AMap.Geocoder'></script>
+<script type="text/javascript">
+	function shellSort(arr,arr2) {
+    var len = arr.length;
+    for (var gap = Math.floor(len / 2); gap > 0; gap = Math.floor(gap / 2)) {
+        for (var i = gap; i < len; i++) {
+            var j = i;
+            var current = arr[i];
+            var current2 = arr2[i];
+            while (j - gap >= 0 && current < arr[j - gap]) {
+                 arr[j] = arr[j - gap];
+                   arr2[j] = arr2[j - gap];
+                 j = j - gap;
+            }
+            arr[j] = current;
+            arr2[j] = current2;
+        }
+    }
+    return arr2;
+}
+    var map = new AMap.Map("container", {});
+    var truckOptions = {
+            map: map,
+            policy:0,
+            size:1,
+            city:'zhengzhou',
+            panel:'panel',
+    };
+        var auto = new AMap.Autocomplete({
+        input: "tiiinput"});
+  var auto1 = new AMap.Autocomplete({
+        input: "tipinput"});
+        function sleep(delay) {
+    var start = (new Date()).getTime();
+    while((new Date()).getTime() - start < delay) {
+        continue;
+    }
+}
+	function sosuo(){
+		$(".cd-pricing-list").html(null);
+		    var c=null;
+		    var d=null;
+		    var arr1=new Array(); var arr2=new Array();
+				var a=document.getElementById("tipinput").value;
+				var b=document.getElementById("tiiinput").value;
+				var radio = $('input[name="radiotime"]:checked').val();
+				var radio1 = $('input[name="radiomi"]:checked').val();
+				//alert(radio1);
+				if(a!=""&&b!=""){
+		 var driving = new AMap.TruckDriving(truckOptions);
+    var path = [
+        {keyword:a,city:'zhengzhou'},//起点
+        {keyword:b,city:'zhengzhou'}//终点
+    ];
+         var   geocoder = new AMap.Geocoder({});
+var didian=document.getElementById("province3").value+document.getElementById("city3").value+document.getElementById("district3").value;
+        geocoder.getLocation(didian, function(status, result) {
+            if (status === 'complete'&&result.geocodes.length) {
+                didian = result.geocodes[0].location;
+            console.log(didian);
+            }});
+    driving.search(path, function(status, result) {
+        // result即是对应的货车导航信息，相关数据结构文档请参考 https://lbs.amap.com/api/javascript-api/reference/route-search#m_DrivingResult
+        if (status === 'complete') {
+            log.success('绘制货车路线完成,需要5秒加载');
+            c=result.routes;
+            c=JSON.stringify(c);
+            c=JSON.parse(c);
+            c=c[0].time;
+            c=c/60;
+//          c=c.match(/\"time\"\:\d+\,\"path\"/);
+//          c=c.toString(c);
+//          c=c.match(/\d+/);
+        //    alert(c);  
+    if(c!=null){
+     $.ajax({
+            url:"../sessions/POST/get_users.php",
+            type: "POST",
+       dataType:"JSONP",
+       async:true,
+       jsonp: "callbackparam",  
+       data:{},
+             beforeSend: function(){
+//           	             	$(".cd-pricing-list").html("'<li>'加载中'</li>'");
+             }, //加载执行方法
+             error: function(err){
+             	err=JSON.stringify(err);
+             	alert(err);
+             	$(".cd-pricing-list").html("'<li>'数据展示'</li>'");
+             } ,
+             success: function(str){
+             $.each(str,function (index,obj) { 
+             	
+             	//console.log(didian);
+             	var jing=obj.jing;
+             	var wei=obj.wei;
+             	var p2= new AMap.LngLat(jing, wei);
+             	var p1= new AMap.LngLat(113.657859,34.745563);
+             	   var distance = Math.round(didian.distance(p2));
+             	   console.log(distance);
+             	   if(distance<60000){
+             	   	 var konjian=obj.konjian;
+             	   	 if(konjian<=radio1){
+                 var money = obj.money;
+//               alert(money);
+                 var what = obj.what;
+                 var where = obj.qidian;
+                 var whereto=obj.zhongdian;
+                 var fabuzhe=obj.fabuzhe;
+                  var how = obj.how;
+                 
+                var time = obj.time;
+                var path = [
+        {keyword:a,city:'zhengzhou'},
+         {keyword:where,city:'zhengzhou'},
+          {keyword:whereto,city:'zhengzhou'},//起点
+        {keyword:b,city:'zhengzhou'}//终点
+    ];
+               var d;
+    driving.search(path, function(status, result) {
+        // result即是对应的货车导航信息，相关数据结构文档请参考 https://lbs.amap.com/api/javascript-api/reference/route-search#m_DrivingResult
+        if (status === 'complete') {
+            log.success('绘制货车路线完成');
+           var d=result.routes;
+            d=JSON.stringify(d);
+            d=JSON.parse(d);
+            d=d[0].time;
+            d=d/60;
+            d=d-c;
+            d=parseInt(d);
+            		if(d<radio){
+          var w1='<li>'+
+                '<header class="cd-pricing-header">'+
+                '<h2>'+
+             '价钱'+
+                '</h2>'+
+                '<div class="cd-price">'+
+                '<span class="cd-currency">'+
+                ''+
+                '</span>'+
+                '<span class="cd-value">'+
+                money+
+                '</span>'+
+                '<span class="cd-duration">'+
+                '人民币'+
+                '</span>'+
+                '</div>'+
+				'</header>'+
+				'<div class="cd-pricing-body">'+
+				'<ul class="cd-pricing-features">'+
+				'<li>'+'<em>'+d+'</em>'+ '多花时间'+'</li>'+
+						'<li>'+'<em>'+where+'</em>'+ '装货点'+'</li>'+
+						'<li>'+'<em>'+whereto+'</em>'+ '卸货点'+'</li>'+
+						'<li>'+'<em>'+what+'</em>'+ '货物'+'</li>'+
+						'<li>'+'<em>'+how+'</em>'+ '重量'+'</li>'+
+						'<li>'+'<em>'+fabuzhe+'</em>'+ '发布人'+'</li>'+
+						'<li>'+'<em>'+time+'</em>'+'时间'+'</li>'+
+						'<li>'+'<em>'+konjian+'</em>'+'大小'+'</li>'+
+					'</ul>'+
+				'</div>'+
+			'	<footer class="cd-pricing-footer">'+
+					'<a class="cd-select" href="tel:fabuzhe">'+
+					'Select'+
+					'</a>'+
+				'</footer>'+
+			'</li>';
+			arr1.push(d);
+			 arr2.push(w1);
+			 console.log(arr1);
+		}
+            
+//			if(d>60){
+//				setTimeout(function(){$(".cd-pricing-list").html($(".cd-pricing-list").html()+w1);},d*100);
+//			}
+//			else{
+//$(".cd-pricing-list").html($(".cd-pricing-list").html()+w1); 
+//			}
+        }
+      });}
+ }
+			});
+setTimeout(function(){
+    arr2=shellSort(arr1,arr2);
+    console.log(arr1);console.log(arr2);
+    if(arr2.length<10)
+  {  l=arr2.length;}
+    else
+  {  l=10;}
+    for(var i=0;i<l;i++){
+    	$(".cd-pricing-list").html($(".cd-pricing-list").html()+arr2[i]); 
+    }
+    },5000);
+   
+             } //成功执行方法
+        });
+     }
+        } else {
+            log.error('获取货车规划数据失败：' + result)
+        }
+    });
+			}
+				else{
+					alert("输入框不能为空");
+				}}
+			function qidian(){
+				localStorage.setItem("fangxiang","4");
+				window.location.href="dingwei.html";
+			}
+			function zhongdian(){
+				localStorage.setItem("fangxiang","5");
+				window.location.href="dingwei.html";
+			}
+		</script>
+</body>
+</html>

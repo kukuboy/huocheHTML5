@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>货车路线规划－使用经纬度</title>
+    <script type="text/javascript" src='https://webapi.amap.com/maps?v=1.4.14&key=afd1fdf002584053aa088a27ecf51391&plugin=AMap.TruckDriving'></script> 
+    <style>
+    html,
+    body,
+    #container {
+        width: 100%;
+        height: 100%;
+    }
+    #panel {
+        position: fixed;
+        background-color: white;
+        max-height: 90%;
+        overflow-y: auto;
+        top: 10px;
+        right: 100%;
+        width: 100%;
+    }
+    #panel .amap-lib-driving {
+   	    border-radius: 4px;
+        overflow: hidden;
+    }
+    </style>
+    <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css" />
+    <script src="https://a.amap.com/jsapi_demos/static/demo-center/js/demoutils.js"></script>
+</head>
+<body>
+<div id="container"></div>
+<div id="panel"></div>
+
+<script type="text/javascript">
+    var map = new AMap.Map("container", {});
+    var truckOptions = {
+            map: map,
+            policy:0,
+            size:1,
+            city:'beijing',
+            panel:'panel'
+    };
+    var driving = new AMap.TruckDriving(truckOptions);
+    var path = [
+        {keyword:'北京站',city:'010'},//起点
+        {keyword:'北京西站',city:'010'},//途径
+        {keyword:'北京大学',city:'010'}//终点
+    ];
+    driving.search(path, function(status, result) {
+        // result即是对应的货车导航信息，相关数据结构文档请参考 https://lbs.amap.com/api/javascript-api/reference/route-search#m_DrivingResult
+        if (status === 'complete') {
+            log.success('绘制货车路线完成')
+        } else {
+            log.error('获取货车规划数据失败：' + result)
+        }
+    });
+</script>
+</body>
+</html>
